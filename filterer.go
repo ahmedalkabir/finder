@@ -50,7 +50,17 @@ func filterer(
 
 			if len(*relations) > 0 {
 				for _, rel := range *relations {
-					if rel.Table == filterArgs[0] {
+
+					// in case there's as keyword
+					tableName := ""
+					if strings.Contains(rel.Table, tableName) {
+						tables := strings.Split(rel.Table, "as")
+						tableName = strings.TrimSpace(tables[1])
+					} else {
+						tableName = rel.Table
+					}
+
+					if tableName == filterArgs[0] {
 						if rel.Join != nil {
 							partOfRelation = true
 							currentRelation = rel

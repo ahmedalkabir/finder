@@ -16,3 +16,9 @@ it in the same query
 - [x] store
 - [x] update
 - [x] destroy
+
+## Additional Feature
+
+## Changes 
+
+* add ability to alias name of table in RelationField
