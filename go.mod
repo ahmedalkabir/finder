@@ -1,4 +1,4 @@
-module github.com/m-row/finder
+module github.com/ahmedalkabir/finder
 
 go 1.22.0
 
