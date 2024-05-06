@@ -21,4 +21,4 @@ it in the same query
 
 ## Changes 
 
-* add ability to alias name of table in RelationField
+- add ability to alias name of table in RelationField
