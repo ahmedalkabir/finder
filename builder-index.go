@@ -113,6 +113,7 @@ func IndexBuilder[T Model](
 		UrlQuery:  &URLQuery{},
 		UrlValues: &urlValues,
 		FromToCol: c.FromToCol,
+		CTE:       c.CTE,
 	}
 	if err := find(cf); err != nil {
 		return nil, err
