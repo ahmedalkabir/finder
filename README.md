@@ -22,3 +22,4 @@ it in the same query
 ## Changes 
 
 - add ability to alias name of table in RelationField
+- add Common Table Expression (CTE) for customized query 
