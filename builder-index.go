@@ -39,6 +39,9 @@ type ConfigIndex struct {
 	// PGInfo contains a map of table names
 	// each key will have string slice containing sorted columns
 	PGInfo map[string][]string
+
+	// common table expression
+	CTE *string
 }
 
 type configFinder struct {
@@ -52,6 +55,7 @@ type configFinder struct {
 	Timezone  *string
 	UrlQuery  *URLQuery
 	UrlValues *url.Values
+	CTE       *string
 }
 
 func IndexBuilder[T Model](
@@ -69,18 +73,26 @@ func IndexBuilder[T Model](
 	if c.Selects == nil {
 		return nil, ErrNoSelectsSlice
 	}
-	results := c.QB.
-		Select(*c.Selects...).
-		From(tableName)
-	if c.Joins != nil {
-		for _, join := range *c.Joins {
-			results = results.LeftJoin(join)
+	var results squirrel.SelectBuilder
+
+	// this is for common table expression
+	if c.CTE != nil {
+		results = c.QB.Select("*").
+			From(*c.CTE)
+	} else {
+		results = c.QB.
+			Select(*c.Selects...).
+			From(tableName)
+		if c.Joins != nil {
+			for _, join := range *c.Joins {
+				results = results.LeftJoin(join)
+			}
 		}
-	}
-	if c.Wheres != nil {
-		if len(*c.Wheres) != 0 {
-			for _, where := range *c.Wheres {
-				results = results.Where(where)
+		if c.Wheres != nil {
+			if len(*c.Wheres) != 0 {
+				for _, where := range *c.Wheres {
+					results = results.Where(where)
+				}
 			}
 		}
 	}

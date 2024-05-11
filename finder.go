@@ -125,6 +125,22 @@ func find(c *configFinder) error { //nolint: gocyclo,maintidx // unavoidable
 						squirrel.ILike{searchCol: searchVal},
 					)
 				}
+			case strings.HasPrefix(col, "cte:"):
+				// use in model as SearchFields array as:
+				//  "cte:customers.name" use aliases of the Common Expression Table
+				if c.CTE != nil {
+					searchCol, found := strings.CutPrefix(
+						col,
+						"cte:",
+					) // TODO: add a check to relation columns
+					if found {
+						searchVal := fmt.Sprint("%", c.UrlQuery.Q, "%")
+						searchSQL = append(
+							searchSQL,
+							squirrel.ILike{searchCol: searchVal},
+						)
+					}
+				}
 			default:
 				searchCol := fmt.Sprintf("%s.%s", tableName, col)
 				searchVal := fmt.Sprint("%", c.UrlQuery.Q, "%")
