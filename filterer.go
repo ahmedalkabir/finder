@@ -55,7 +55,7 @@ func filterer(
 					tableName := ""
 					if strings.Contains(rel.Table, tableName) {
 						tables := strings.Split(rel.Table, "as")
-						tableName = strings.TrimSpace(tables[1])
+						tableName = strings.TrimSpace(tables[0])
 					} else {
 						tableName = rel.Table
 					}
